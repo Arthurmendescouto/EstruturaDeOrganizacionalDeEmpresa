@@ -25,9 +25,8 @@ public class Main {
                     org.executarPasso1(scanner);
                     break;
                 case "2":
-                    // Você implementará o Passo 2 aqui
-                    System.out.println("Aguardando implementação do Passo 2 (Definir Subordinado)...");
-                    // Exemplo: org.executarPasso2(scanner);
+                    // Executa a função do Passo 2
+                    org.executarPasso2(scanner);
                     break;
                 case "0":
                     System.out.println("Encerrando o sistema.");
