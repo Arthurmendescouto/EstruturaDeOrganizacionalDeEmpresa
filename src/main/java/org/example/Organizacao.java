@@ -5,7 +5,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Organizacao {
-    // Map principal para armazenar todos os nós. Chave: Nome (String), Valor: Objeto Pessoa
+    // Map principal para armazenar todos os nós. Chave: Nome (String), Valor:
+    // Objeto Pessoa
     private Map<String, Pessoa> estrutura;
 
     public Organizacao() {
@@ -80,7 +81,8 @@ public class Organizacao {
 
     /**
      * Implementação do Passo 2: Define uma relação de subordinação (pai-filho).
-     * @param nomeSuperior Nome da pessoa que será o superior
+     * 
+     * @param nomeSuperior    Nome da pessoa que será o superior
      * @param nomeSubordinado Nome da pessoa que será o subordinado
      */
     public void definirSubordinado(String nomeSuperior, String nomeSubordinado) {
@@ -110,10 +112,11 @@ public class Organizacao {
             return;
         }
 
-        // Validação: Verifica se o subordinado já tem um superior (evita múltiplos superiores)
+        // Validação: Verifica se o subordinado já tem um superior (evita múltiplos
+        // superiores)
         if (subordinado.getSuperior() != null) {
-            System.out.println("AVISO: '" + nomeSubordinado + "' já possui um superior ('" + 
-                             subordinado.getSuperior().getNome() + "'). Removendo relação anterior.");
+            System.out.println("AVISO: '" + nomeSubordinado + "' já possui um superior ('" +
+                    subordinado.getSuperior().getNome() + "'). Removendo relação anterior.");
             // Remove da lista de subordinados do superior anterior
             subordinado.getSuperior().getSubordinados().remove(subordinado);
         }
@@ -151,4 +154,62 @@ public class Organizacao {
         // Chama a função central que realiza a definição
         definirSubordinado(nomeSuperior, nomeSubordinado);
     }
+
+    /**
+     * Implementação do Passo 3:
+     * Remove uma pessoa/cargo e todos os seus subordinados recursivamente.
+     */
+    public void removerPessoa(String nome) {
+        Pessoa pessoa = estrutura.get(nome);
+
+        if (pessoa == null) {
+            System.out.println("ERRO: Pessoa '" + nome + "' não encontrada.");
+            return;
+        }
+
+        // Se tiver superior, remove da lista de subordinados dele
+        if (pessoa.getSuperior() != null) {
+            pessoa.getSuperior().getSubordinados().remove(pessoa);
+        }
+
+        // Remove todos os subordinados recursivamente
+        removerSubordinadosRecursivo(pessoa);
+
+        // Remove a própria pessoa do Map
+        estrutura.remove(nome);
+
+        System.out.println("\nSUCESSO! Pessoa '" + nome +
+                "' e todos os seus subordinados foram removidos.");
+    }
+
+    private void removerSubordinadosRecursivo(Pessoa pessoa) {
+        for (Pessoa subordinado : pessoa.getSubordinados()) {
+            // Remove filhos do subordinado primeiro (recursão)
+            removerSubordinadosRecursivo(subordinado);
+
+            // Remove o subordinado do Map
+            estrutura.remove(subordinado.getNome());
+        }
+
+        // Limpa a lista de subordinados da pessoa
+        pessoa.getSubordinados().clear();
+    }
+
+    /**
+     * Função para gerenciar a interação via terminal para o Passo 3.
+     */
+    public void executarPasso3(Scanner scanner) {
+        System.out.println("\n--- Passo 3: Remover Pessoa/Cargo ---");
+
+        if (estrutura.isEmpty()) {
+            System.out.println("ERRO: Não há pessoas cadastradas.");
+            return;
+        }
+
+        System.out.print("Digite o NOME da pessoa/cargo a ser removida: ");
+        String nome = scanner.nextLine().trim();
+
+        removerPessoa(nome);
+    }
+
 }
