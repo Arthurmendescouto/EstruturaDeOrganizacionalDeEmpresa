@@ -404,6 +404,45 @@ public class Organizacao {
      * Função para gerenciar a interação via terminal para o Passo 6.
      */
     public void executarPasso6(Scanner scanner) {
-        listarLinhasDeReporte();
+        System.out.println("\n--- Passo 6: Listar Linhas de Reporte ---");
+
+        if (estrutura.isEmpty()) {
+            System.out.println("ERRO: Não há pessoas cadastradas na organização.");
+            return;
+        }
+
+        // Verifica se há mais de uma pessoa com superior == null
+        List<Pessoa> pessoasSemSuperior = new ArrayList<>();
+        for (Pessoa p : estrutura.values()) {
+            if (p.getSuperior() == null)
+                pessoasSemSuperior.add(p);
+        }
+
+        if (pessoasSemSuperior.size() == 1) {
+            listarLinhasDeReporte();
+        }
+
+        // Caso exista mais de 1, será dada ao usuário a opção de efetuar a correção
+        if (pessoasSemSuperior.size() > 1) {
+            String userInput;
+            System.out.println("ERRO: Há mais de uma pessoa sem superior, linhas de reporte não podem ser listadas");
+            boolean invalidInput = true;
+            while (invalidInput) {
+                System.out.println("1. Ver passos para a correção");
+                System.out.println("0. Voltar para tela inicial");
+                userInput = scanner.nextLine().trim();
+                // Passos para a correção da árvore
+                if (userInput.equals("1")) {
+                    corrigirArvore(scanner, pessoasSemSuperior);
+                    invalidInput = false;
+                    // Após correção, lista as linhas de reporte
+                    listarLinhasDeReporte();
+                } else if (userInput.equals("0")) {
+                    invalidInput = false;
+                } else {
+                    System.out.println("Valor inválido, tente novamente!");
+                }
+            }
+        }
     }
 }
