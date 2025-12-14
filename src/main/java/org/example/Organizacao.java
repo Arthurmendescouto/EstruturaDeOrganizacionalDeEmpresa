@@ -339,4 +339,71 @@ public class Organizacao {
             }
         }
     }
+
+    /**
+     * Implementação do Passo 6:
+     * Lista as "linhas de reporte" de cada funcionário - percurso raiz → folha.
+     * Para cada pessoa na organização, mostra o caminho completo desde a raiz até ela.
+     */
+    public void listarLinhasDeReporte() {
+        if (estrutura.isEmpty()) {
+            System.out.println("ERRO: Não há pessoas cadastradas na organização.");
+            return;
+        }
+
+        // Encontra a raiz (pessoa sem superior)
+        Pessoa root = null;
+        for (Pessoa p : estrutura.values()) {
+            if (p.getSuperior() == null) {
+                root = p;
+                break;
+            }
+        }
+
+        if (root == null) {
+            System.out.println("ERRO: Não foi possível encontrar a raiz da organização.");
+            return;
+        }
+
+        System.out.println("\n--- Passo 6: Linhas de Reporte (Raiz → Folha) ---");
+        System.out.println("Mostrando o caminho hierárquico completo para cada funcionário:\n");
+
+        // Lista auxiliar para armazenar o caminho atual
+        List<String> caminhoAtual = new ArrayList<>();
+        
+        // Chama a função recursiva para percorrer toda a árvore
+        listarLinhasRecursivo(root, caminhoAtual);
+    }
+
+    /**
+     * Função recursiva auxiliar para listar as linhas de reporte.
+     * 
+     * @param pessoa        A pessoa atual sendo processada
+     * @param caminhoAtual  Lista com os nomes do caminho da raiz até o pai da pessoa atual
+     */
+    private void listarLinhasRecursivo(Pessoa pessoa, List<String> caminhoAtual) {
+        // Adiciona a pessoa atual ao caminho
+        caminhoAtual.add(pessoa.getNome() + " (" + pessoa.getCargo() + ")");
+
+        // Monta a string de caminho hierárquico
+        String linhadeReporte = String.join(" > ", caminhoAtual);
+        
+        // Imprime a linha de reporte
+        System.out.println(linhadeReporte);
+
+        // Processa todos os subordinados
+        for (Pessoa subordinado : pessoa.getSubordinados()) {
+            listarLinhasRecursivo(subordinado, caminhoAtual);
+        }
+
+        // Remove a pessoa atual do caminho ao voltar da recursão (backtracking)
+        caminhoAtual.remove(caminhoAtual.size() - 1);
+    }
+
+    /**
+     * Função para gerenciar a interação via terminal para o Passo 6.
+     */
+    public void executarPasso6(Scanner scanner) {
+        listarLinhasDeReporte();
+    }
 }
