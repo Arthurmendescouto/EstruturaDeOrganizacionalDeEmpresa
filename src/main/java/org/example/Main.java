@@ -25,15 +25,13 @@ public class Main {
 
             switch (opcao) {
                 case "1":
-                    // Executa a função do Passo 1
                     org.executarPasso1(scanner);
                     break;
                 case "2":
-                    // Executa a função do Passo 2
                     org.executarPasso2(scanner);
                     break;
                 case "3":
-                    org.executarPasso3(scanner); //  Passo 3
+                    org.executarPasso3(scanner);
                     break;
                 case "4":
                     org.executarPasso4(scanner);
@@ -42,7 +40,7 @@ public class Main {
                     org.executarPasso5(scanner);
                     break;
                 case "6":
-                    org.executarPasso6(scanner); // Passo 6
+                    org.executarPasso6(scanner);
                     break;
                 case "0":
                     System.out.println("Encerrando o sistema.");
@@ -51,7 +49,6 @@ public class Main {
                     System.out.println("Opção inválida. Tente novamente.");
             }
 
-            // Opcional: Mostrar o total de pessoas adicionadas
             System.out.println("\nPessoas na estrutura: " + org.getEstrutura().size());
 
         } while (!opcao.equals("0"));

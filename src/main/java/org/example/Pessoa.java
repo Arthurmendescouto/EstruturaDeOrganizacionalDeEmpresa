@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pessoa {
-    // Atributos definidos no Passo 1
     private String nome;
     private String cargo;
     private String departamento;
     private Double salario;
 
-    // Atributos necessários para a hierarquia (Passo 2 em diante)
     private List<Pessoa> subordinados;
     private Pessoa superior;
 
