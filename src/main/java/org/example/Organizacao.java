@@ -409,6 +409,21 @@
          * @return Caminho hierárquico formatado
          * @author Filipe Alves
          */
+        public void executarPasso5(Scanner scanner){
+            System.out.println("\n--- Passo 5: Buscar Caminho Hierárquico ---");
+
+            if (estrutura.isEmpty()) {
+                System.out.println("ERRO: Não há pessoas cadastradas na organização.");
+                return;
+            }
+
+            System.out.print("Digite o NOME da pessoa para buscar o caminho hierárquico: ");
+            String nome = scanner.nextLine().trim();
+
+            String resultado = buscarCaminhoHierarquico(nome);
+            System.out.println("Caminho Hierárquico: " + resultado);
+        }
+        
         public String buscarCaminhoHierarquico (String nome) {
             Pessoa pessoa = estrutura.get(nome);
 
@@ -425,21 +440,6 @@
 
             Collections.reverse(caminho);
             return String.join(" > ", caminho);
-        }
-
-        public void executarPasso5(Scanner scanner){
-            System.out.println("\n--- Passo 5: Buscar Caminho Hierárquico ---");
-
-            if (estrutura.isEmpty()) {
-                System.out.println("ERRO: Não há pessoas cadastradas na organização.");
-                return;
-            }
-
-            System.out.print("Digite o NOME da pessoa para buscar o caminho hierárquico: ");
-            String nome = scanner.nextLine().trim();
-
-            String resultado = buscarCaminhoHierarquico(nome);
-            System.out.println("Caminho Hierárquico: " + resultado);
         }
 
         /**
