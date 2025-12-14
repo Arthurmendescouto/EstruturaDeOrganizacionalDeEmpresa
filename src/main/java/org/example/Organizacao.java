@@ -1,8 +1,6 @@
 package org.example;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Organizacao {
     // Map principal para armazenar todos os nós. Chave: Nome (String), Valor:
@@ -212,4 +210,133 @@ public class Organizacao {
         removerPessoa(nome);
     }
 
+    public void executarPasso4(Scanner scanner) {
+        System.out.println("\n--- Passo 4: Exibir organograma ---");
+
+        if (estrutura.isEmpty()) {
+            System.out.println("Ainda não há pessoas/cargos cadastrados no sistema");
+            return;
+        }
+        //Verifica se há mais de uma pessoa com a opção superior == null
+        List<Pessoa> pessoasSemSuperior = new ArrayList<>();
+        for (Pessoa p : estrutura.values()) {
+            if (p.getSuperior() == null)
+                pessoasSemSuperior.add(p);
+        }
+        if (pessoasSemSuperior.size() == 1){
+            printOrganograma();
+        }
+        //Em nossa lógica, o usuário raiz é o que possui o parâmetro "Superior" como null
+        //Caso exista mais de 1 será dada ao usuário a opção de efetuar a correção.
+        if (pessoasSemSuperior.size() > 1) {
+            String userInput;
+            System.out.println("ERRO: Há mais de uma pessoa sem superior, oraganograma não pode ser listado");
+            boolean invalidInput = true;
+            while (invalidInput) {
+                System.out.println("1. Ver passos para a correção");
+                System.out.println("0. Voltar para tela inicial");
+                userInput = scanner.nextLine().trim();
+                //Passos para a correção da árvore
+                if (userInput.equals("1")) {
+                    corrigirArvore(scanner, pessoasSemSuperior);
+                    invalidInput = false;
+                }
+                else if (userInput.equals("0")) {
+                    invalidInput = false;
+                } else {
+                    System.out.println("Valor inválido, tente novamente!");
+                }
+            }
+        }
+
+    }
+
+    /**
+     *
+     * @param scanner utilizado para digitação de valores pelo usuário
+     * @param listaDePessoas lista de pessoas com o parâmetro "superior" igual a "null"
+     */
+    public void corrigirArvore(Scanner scanner, List<Pessoa> listaDePessoas) {
+        //Definir o Diretor/Raiz
+        System.out.println("Para começar, me diga qual desses usuários é o diretor/presidente: ");
+
+        for (Pessoa p : listaDePessoas)
+            System.out.println(p.getNome());
+
+        // Chama o método auxiliar. Se retornar null, o usuário digitou 0.
+        String nomeRoot = buscarNomeValido(scanner, "Nome do diretor (ou 0 para voltar): ");
+
+        if (nomeRoot == null) return; // Sai do método e volta pro menu
+
+        // Remove da lista de forma segura (Java 8+)
+        listaDePessoas.removeIf(p -> p.getNome().equalsIgnoreCase(nomeRoot));
+
+        System.out.println("Certo, agora vamos corrigir os demais.");
+
+        //Definir os superiores dos demais
+        for (Pessoa pessoa : listaDePessoas) {
+            String msg = "Quem é o superior de " + pessoa.getNome() + "? (ou 0 para voltar): ";
+            String nomeSuperior = buscarNomeValido(scanner, msg);
+
+            // Se digitou 0, encerra o método inteiro
+            if (nomeSuperior == null) return;
+
+            // Lógica de negócio (atualizar a estrutura)
+            Pessoa superior = estrutura.get(nomeSuperior);
+            Pessoa subordinado = estrutura.get(pessoa.getNome());
+
+            superior.getSubordinados().add(subordinado);
+            subordinado.setSuperior(superior);
+        }
+
+        System.out.println("Correção da árvore finalizada!");
+    }
+
+    /**
+     * Método auxiliar que trata o loop de validação e a opção de sair.
+     * Retorna o nome válido (já com trim) ou null se o usuário digitou 0.
+     */
+    private String buscarNomeValido(Scanner scanner, String mensagem) {
+        while (true) {
+            System.out.print(mensagem);
+            String input = scanner.nextLine().trim();
+
+            if (input.equals("0")) {
+                return null;
+            }
+            if (estrutura.containsKey(input)) {
+                return input;
+            }
+
+            System.out.println("Erro: Pessoa não encontrada no sistema.");
+            System.out.println("Tente novamente.");
+        }
+    }
+
+    private void printOrganograma() {
+        Pessoa root = null;
+        for (Pessoa p : estrutura.values()) {
+            if (p.getSuperior() == null) {
+                root = p;
+                break;
+            }
+        }
+        if (root != null) {
+            System.out.println("\n--- Organograma Atual ---");
+            imprimirRecursivo(root, 0);
+        } else {
+            System.out.println("Não foi possível encontrar o diretor raiz para exibir.");
+        }
+    }
+    private void imprimirRecursivo(Pessoa pessoa, int nivel) {
+        String indentacao = "";
+        for (int i = 0; i < nivel; i++)
+            indentacao += "    |";
+        System.out.println(indentacao + "--> " + pessoa.getNome());
+        if (pessoa.getSubordinados() != null) {
+            for (Pessoa subordinado : pessoa.getSubordinados()) {
+                imprimirRecursivo(subordinado, nivel + 1);
+            }
+        }
+    }
 }

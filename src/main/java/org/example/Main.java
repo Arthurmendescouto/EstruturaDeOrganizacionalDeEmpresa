@@ -15,6 +15,7 @@ public class Main {
             System.out.println("1. Adicionar Pessoa/Cargo (Passo 1)");
             System.out.println("2. Definir Subordinado (Passo 2)");
             System.out.println("3. Remover Pessoa/Cargo (Passo 3)");
+            System.out.println("4. Exibir organograma da árvore (Passo 4)");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
 
@@ -31,6 +32,9 @@ public class Main {
                     break;
                 case "3":
                     org.executarPasso3(scanner); //  Passo 3
+                    break;
+                case "4":
+                    org.executarPasso4(scanner);
                     break;
                 case "0":
                     System.out.println("Encerrando o sistema.");
