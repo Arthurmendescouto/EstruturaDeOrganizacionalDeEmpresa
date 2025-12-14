@@ -423,17 +423,25 @@
             String resultado = buscarCaminhoHierarquico(nome);
             System.out.println("Caminho Hierárquico: " + resultado);
         }
-        
-        public String buscarCaminhoHierarquico (String nome) {
-            Pessoa pessoa = estrutura.get(nome);
 
-            if(pessoa == null){
-                return "Pessoa não encontrada na organização";
+        private String buscarCaminhoHierarquico(String nome) {
+            Pessoa pessoa = null;
+
+            for (Pessoa p : estrutura.values()) {
+                if (p.getNome().equalsIgnoreCase(nome)) {
+                    pessoa = p;
+                    break;
+                }
+            }
+
+            if (pessoa == null) {
+                return "Pessoa não encontrada na organização.";
             }
 
             List<String> caminho = new ArrayList<>();
             Pessoa atual = pessoa;
-            while(atual != null) {
+
+            while (atual != null) {
                 caminho.add(atual.getCargo());
                 atual = atual.getSuperior();
             }
