@@ -332,7 +332,7 @@ public class Organizacao {
         String indentacao = "";
         for (int i = 0; i < nivel; i++)
             indentacao += "    |";
-        System.out.println(indentacao + "--> " + pessoa.getNome());
+        System.out.println(indentacao + "--> " + "[" + pessoa.getCargo() +"] " + pessoa.getNome() + " " + "(" + pessoa.getDepartamento() + ")");
         if (pessoa.getSubordinados() != null) {
             for (Pessoa subordinado : pessoa.getSubordinados()) {
                 imprimirRecursivo(subordinado, nivel + 1);
