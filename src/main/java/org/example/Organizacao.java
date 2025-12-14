@@ -12,7 +12,7 @@
         }
 
         /**
-         * Implementação do Passo 1: Adiciona uma nova pessoa à estrutura.
+         * Passo 1: Adiciona uma nova pessoa à estrutura.
          * author Arthur Mendes Couto
          */
         public void adicionarPessoa(String nome, String cargo, String departamento, Double salario) {
@@ -79,7 +79,7 @@
         }
 
         /**
-         * Implementação do Passo 2: Define uma relação de subordinação (pai-filho).
+         * Passo 2: Define uma relação de subordinação (pai-filho).
          * 
          * @param nomeSuperior    Nome da pessoa que será o superior
          * @param nomeSubordinado Nome da pessoa que será o subordinado
@@ -156,8 +156,8 @@
         }
 
         /**
-         * Implementação do Passo 3:
-         * Remove uma pessoa/cargo e todos os seus subordinados recursivamente.
+         * Passo 3: Remove uma pessoa/cargo e todos os seus subordinados recursivamente.
+         * @author Sérgio Emílio
          */
         public void removerPessoa(String nome) {
             Pessoa pessoa = estrutura.get(nome);
@@ -343,9 +343,9 @@
         }
 
         /**
-         * Implementação do Passo 6:
-         * Lista as "linhas de reporte" de cada funcionário - percurso raiz → folha.
+         * Passo 4: Lista as "linhas de reporte" de cada funcionário - percurso raiz → folha.
          * Para cada pessoa na organização, mostra o caminho completo desde a raiz até ela.
+         * @author Felipe Oliveira de Abreu 
          */
         public void listarLinhasDeReporte() {
             if (estrutura.isEmpty()) {
@@ -405,7 +405,6 @@
 
         /**
          * Passo 5: Retorna o caminho hierárquico da raiz até a pessoa buscada.
-         *
          * @param nome Nome da pessoa
          * @return Caminho hierárquico formatado
          * @author Filipe Alves
